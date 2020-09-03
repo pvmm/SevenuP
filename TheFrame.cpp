@@ -30,10 +30,10 @@
 #endif
 
 #define ADD_TOOL(id, bmp, tooltip, help) \
-        toolBar->AddTool(id,bmp,wxNullBitmap,FALSE,-1,-1,(wxObject *)0, tooltip,help)
+        toolBar->AddTool(id,"",bmp,wxNullBitmap,wxITEM_NORMAL,help,tooltip,(wxObject *)0)
 
 #define ADD_TOOL2(id, bmp, tooltip) \
-        toolBar->AddTool(id,bmp,wxNullBitmap,FALSE,-1,-1,(wxObject *)0, tooltip)
+        toolBar->AddTool(id,"",bmp,wxNullBitmap,wxITEM_NORMAL,wxEmptyString,tooltip,(wxObject *)0)
 
 // Colors 0-15 Speccy, 16 grid light brown, 17 grid orange, 18-19 mask grid
 BYTE RedPal[20]={0,0,200,200,0,0,200,200,0,0,248,248,0,0,248,248,154,238,154,238};
@@ -824,9 +824,9 @@ void TheFrame::FileNew(wxCommandEvent &event)
                 newitem1 = new wxBoxSizer (wxHORIZONTAL);
                 wxFlexGridSizer *newitem3 = new wxFlexGridSizer( 2, 0, 0 );
                 wxStaticText *newitem4 = new wxStaticText( &dialog, ID_TEXT, _("Size X:"), wxDefaultPosition, wxDefaultSize, 0 );
-                newitem5 = new wxSpinCtrl( &dialog, ID_NEW_SPINCTRL1, wxString::Format(_("%d"),newdefaultx), wxDefaultPosition, wxSize(50,-1), 0, 1, 256, newdefaultx );
+                newitem5 = new wxSpinCtrl( &dialog, ID_NEW_SPINCTRL1, wxString::Format(_("%d"),newdefaultx), wxDefaultPosition, wxSize(110,-1), 0, 1, 256, newdefaultx );
                 wxStaticText *newitem6 = new wxStaticText( &dialog, ID_TEXT,_("Size Y:"), wxDefaultPosition, wxDefaultSize, 0 );
-                newitem7 = new wxSpinCtrl( &dialog, ID_NEW_SPINCTRL2, wxString::Format(_("%d"),newdefaulty), wxDefaultPosition, wxSize(50,-1), 0, 1, 192, newdefaulty );
+                newitem7 = new wxSpinCtrl( &dialog, ID_NEW_SPINCTRL2, wxString::Format(_("%d"),newdefaulty), wxDefaultPosition, wxSize(110,-1), 0, 1, 192, newdefaulty );
                 wxButton *newitem8 = new wxButton( &dialog, wxID_OK,_("OK"), wxDefaultPosition, wxDefaultSize, 0 );
                 wxButton *newitem9 = new wxButton( &dialog, wxID_CANCEL,_("Cancel"), wxDefaultPosition, wxDefaultSize, 0 );
 
@@ -1191,7 +1191,7 @@ void TheFrame::FileExportImage(wxCommandEvent &event)
         if (Files_open==0) return;
         lastx=-1;
 
-        wxFileDialog dialog(this,_("Choose name and image format to save"), ExportImagePath, Current->OpenName,_("PNG - Portable Network Graphic|*.png|BMP - Windows Bitmap|*.bmp|JPG - Joint Picture Experts Group|*.jpg|PCX - Zsoft Paintbrush|*.pcx|TIF - Tagged Image File Format|*.tif|XPM - X-Bitmap|*.xpm"),wxSAVE|wxOVERWRITE_PROMPT);
+        wxFileDialog dialog(this,_("Choose name and image format to save"), ExportImagePath, Current->OpenName,_("PNG - Portable Network Graphic|*.png|BMP - Windows Bitmap|*.bmp|JPG - Joint Picture Experts Group|*.jpg|PCX - Zsoft Paintbrush|*.pcx|TIF - Tagged Image File Format|*.tif|XPM - X-Bitmap|*.xpm"),wxFD_SAVE|wxFD_OVERWRITE_PROMPT);
         
         dialog.CentreOnParent();
         if (dialog.ShowModal() == wxID_OK)
@@ -1341,7 +1341,7 @@ void TheFrame::FileFastSave(wxCommandEvent &event)
                 }
         else
                 {
-                wxFileDialog dialog(this, _("Choose a file name to save"), SavePath, Current->OpenName,_("SEVenuP graphic format (*.sev)|*.sev"), wxSAVE|wxOVERWRITE_PROMPT);
+                wxFileDialog dialog(this, _("Choose a file name to save"), SavePath, Current->OpenName,_("SEVenuP graphic format (*.sev)|*.sev"), wxFD_SAVE|wxFD_OVERWRITE_PROMPT);
                 dialog.CentreOnParent();
                 if (dialog.ShowModal() == wxID_OK)
                         {
@@ -1377,10 +1377,10 @@ void TheFrame::FileSave(wxCommandEvent &event)
 	wxString extensions[] = {_(".scr"),_(".sev")};
 	if ((Current->OpenGraph->GetSizeX()==256)&&(Current->OpenGraph->GetSizeY()==192))
                 {
-	        dialog = new wxFileDialog(this, _("Choose a file name to save"), SavePath, Current->OpenName, _("SCReen memory snapshot (*.scr)|*.scr|SEVenuP graphic format (*.sev)|*.sev"), wxSAVE|wxOVERWRITE_PROMPT);
+	        dialog = new wxFileDialog(this, _("Choose a file name to save"), SavePath, Current->OpenName, _("SCReen memory snapshot (*.scr)|*.scr|SEVenuP graphic format (*.sev)|*.sev"), wxFD_SAVE|wxFD_OVERWRITE_PROMPT);
 		}
 	else	{
-	        dialog = new wxFileDialog(this,_("Choose a file name to save"), SavePath, Current->OpenName,_("SEVenuP graphic format (*.sev)|*.sev"), wxSAVE|wxOVERWRITE_PROMPT);
+	        dialog = new wxFileDialog(this,_("Choose a file name to save"), SavePath, Current->OpenName,_("SEVenuP graphic format (*.sev)|*.sev"), wxFD_SAVE|wxFD_OVERWRITE_PROMPT);
 		extensions[0] =_(".sev");
 		}
 	dialog->CentreOnParent();
@@ -1463,7 +1463,7 @@ void TheFrame::FileExportData(wxCommandEvent &event)
         		break;
         		}
         	}
-        wxFileDialog dialog(this, _("Choose a file name to save"), ExportDataPath, Current->OpenName, ExportDataExtensions, wxSAVE|(wxOVERWRITE_PROMPT*(1-appendfile)));
+        wxFileDialog dialog(this, _("Choose a file name to save"), ExportDataPath, Current->OpenName, ExportDataExtensions, wxFD_SAVE|(wxFD_OVERWRITE_PROMPT*(1-appendfile)));
         dialog.CentreOnParent();
         if (dialog.ShowModal() == wxID_OK)
                 {
